@@ -70,8 +70,11 @@ RUN php artisan key:generate && \
     php artisan route:cache && \
     php artisan view:cache
 
-# Ejecutar migraciones (esto crea las tablas de Breeze)
-RUN php artisan migrate --force
+# ⭐ EJECUTAR MIGRACIONES Y SEEDERS (CRÍTICO)
+RUN php artisan migrate:fresh --force --seed
+
+# Verificar que se crearon los usuarios
+RUN php artisan tinker --execute="echo 'Total usuarios creados: ' . \App\Models\User::count() . PHP_EOL; echo 'Total productos: ' . \App\Models\Product::count() . PHP_EOL;"
 
 # Exponer puerto 8080
 EXPOSE 8080
